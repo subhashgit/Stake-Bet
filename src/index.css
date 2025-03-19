@@ -1,0 +1,137 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://rsms.me/inter/inter.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 217.2 32.6% 17.5%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-betting-dark text-foreground font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-betting-dark;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-betting-dark-lighter rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-opacity-80;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply backdrop-blur-lg bg-glass-gradient bg-opacity-20 border border-white/10 shadow-glass transition-all;
+  }
+
+  .glass-panel:hover {
+    @apply shadow-glass-hover;
+  }
+
+  .neomorphic-button {
+    @apply shadow-neomorphic transition-all;
+  }
+
+  .neomorphic-button:hover {
+    @apply shadow-neomorphic-inset;
+  }
+
+  .input-field {
+    @apply w-full bg-betting-dark-accent border border-betting-dark-lighter rounded-md px-3 py-2 text-white outline-none focus:ring-2 focus:ring-betting-blue/50 transition-all;
+  }
+
+  .tab-active {
+    @apply bg-betting-blue text-white font-medium;
+  }
+
+  .tab-inactive {
+    @apply bg-betting-dark-accent text-gray-300 hover:bg-betting-dark-lighter transition-all;
+  }
+}
+
+.animate-enter {
+  animation: enter 0.5s ease-out;
+}
+
+@keyframes enter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.animate-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.animate-delay-3 {
+  animation-delay: 0.3s;
+}
