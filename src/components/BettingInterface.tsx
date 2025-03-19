@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Play, Pause, RotateCcw, PlusCircle, MinusCircle, DollarSign } from "lucide-react";
+import { Play, Pause, RotateCcw, PlusCircle, MinusCircle, DollarSign, Settings } from "lucide-react";
 import BettingControls from "./BettingControls";
 import GameModeSelector from "./GameModeSelector";
 import BetHistoryPanel from "./BetHistoryPanel";
@@ -22,6 +22,7 @@ const BettingInterface: React.FC<BettingInterfaceProps> = ({ className }) => {
   const [isApiConnected, setIsApiConnected] = useState<boolean>(false);
   const [apiToken, setApiToken] = useState<string>('');
   const [userBalance, setUserBalance] = useState([]);
+  const [showApiSettings, setShowApiSettings] = useState<boolean>(false);
   
   const [baseAmount, setBaseAmount] = useState<string>('0.00');
   const [currency, setCurrency] = useState<string>('usdc');
@@ -79,6 +80,10 @@ const BettingInterface: React.FC<BettingInterfaceProps> = ({ className }) => {
         description: result.error,
       });
     }
+  };
+
+  const toggleApiSettings = () => {
+    setShowApiSettings(!showApiSettings);
   };
 
   useEffect(() => {
@@ -268,8 +273,6 @@ const BettingInterface: React.FC<BettingInterfaceProps> = ({ className }) => {
       position: "bottom-center",
     });
   };
-// console.log(userBalance); 
-
 
   return (
     <motion.div 
@@ -296,17 +299,47 @@ const BettingInterface: React.FC<BettingInterfaceProps> = ({ className }) => {
                 </div>
               </div>
               
-              <GameModeSelector 
-                currentGame={currentGame} 
-                onChange={setCurrentGame} 
-              />
+              <div className="flex items-center space-x-3">
+                <GameModeSelector 
+                  currentGame={currentGame} 
+                  onChange={setCurrentGame} 
+                />
+                {isApiConnected && userBalance !== null && (
+                  <div className="bg-betting-dark/40 px-3 py-1.5 rounded-md flex items-center space-x-2">
+                    <span className="text-sm text-gray-300">Balance:</span>
+                    <select 
+                      onChange={(e) => setCurrency(e.target.value)}
+                      className="bg-transparent text-betting-green border-none focus:outline-none"
+                    >
+                      {userBalance.map(item => (
+                        <option key={item.key} value={item.available.currency}>
+                          {item.available.currency}: {item.available.amount}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                <button 
+                  onClick={toggleApiSettings}
+                  className="relative p-2 rounded-md transition-all duration-200 text-gray-400 hover:text-gray-200 hover:bg-betting-dark/40"
+                >
+                  <Settings size={22} />
+                </button>
+              </div>
             </div>
           </Card>
         </motion.div>
         
-        <motion.div variants={itemVariants}>
-          <StakeApiCredentials onApiConnected={handleApiConnection} />
-        </motion.div>
+        {showApiSettings && (
+          <motion.div 
+            variants={itemVariants}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <StakeApiCredentials onApiConnected={handleApiConnection} />
+          </motion.div>
+        )}
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <motion.div variants={itemVariants} className="lg:col-span-2">
@@ -326,27 +359,11 @@ const BettingInterface: React.FC<BettingInterfaceProps> = ({ className }) => {
                 
                 <TabsContent value="static" className="p-6 space-y-6 animate-enter">
                   <div className="space-y-4">
-                    {isApiConnected && userBalance !== null && (
-                      <div className="bg-betting-dark/40 p-3 rounded-md flex items-center justify-between">
-                        <span className="text-sm text-gray-300">Available Balance:</span>
-                        <span className="font-medium text-betting-green">
-
-                          <select onChange={(e) => setCurrency(e.target.value)}>
-                          {userBalance.map(item => (
-                              <option key={item.key} value={item.available.currency}>
-                                <h1>{item.available.currency}</h1>
-                                (<p>{item.available.amount}</p>)
-                              </option>
-                            ))}
-
-                          </select>
-                        </span>
-                      </div>
-                    )}
+                   
                     
                     <div>
                       <Label htmlFor="base-amount" className="text-sm text-gray-400">
-                        Base Bet Amount (USDC)
+                        Base Bet Amount
                       </Label>
                       <div className="relative mt-1.5">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
